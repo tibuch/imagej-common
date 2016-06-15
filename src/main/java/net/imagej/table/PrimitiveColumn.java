@@ -31,33 +31,24 @@
 
 package net.imagej.table;
 
-import java.util.List;
-
-import org.scijava.util.Sizable;
+import org.scijava.util.PrimitiveArray;
 
 /**
- * A column of data of a {@link Table}.
+ * A column of data backed by a {@link PrimitiveArray}.
  *
  * @author Curtis Rueden
- * @param <T> The type of data stored in the table.
+ * @author Alison Walter
+ * @param <ArrayType> Type of the primitive array; e.g., {@code double[]}.
+ * @param <BaseType> Boxed type of the array element; e.g., {@code Double}.
  */
-public interface Column<T> extends List<T>, Sizable {
+public interface PrimitiveColumn<ArrayType, BaseType> extends Column<BaseType>,
+	PrimitiveArray<ArrayType, BaseType>
+{
 
-	/** Gets the header of this column. */
-	String getHeader();
+	/** Fills the column with the values in the given array. */
+	void fill(ArrayType values);
 
-	/** Sets the header of this column. */
-	void setHeader(String header);
-
-	/** Gets the column's size (i.e., number of rows). */
-	@Override
-	int size();
-
-	/** Sets the column's size (i.e., number of rows). */
-	@Override
-	void setSize(int size);
-
-	/** Returns the actual type of data stored in the column. */
-	Class<T> getType();
+	/** Fills the column with the values in the given array. */
+	void fill(ArrayType values, int offset);
 
 }

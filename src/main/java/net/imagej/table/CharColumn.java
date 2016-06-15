@@ -38,7 +38,9 @@ import org.scijava.util.CharArray;
  *
  * @author Alison Walter
  */
-public class CharColumn extends CharArray implements Column<Character> {
+public class CharColumn extends CharArray implements
+	PrimitiveColumn<char[], Character>
+{
 
 	/** The column header. */
 	private String header;
@@ -66,31 +68,20 @@ public class CharColumn extends CharArray implements Column<Character> {
 		return Character.class;
 	}
 
+	// -- PrimitiveColumn methods --
+
 	@Override
-	public void fill(final Character[] values) {
-		final char[] prim = toPrimitive(values);
-		this.setArray(prim);
+	public void fill(final char[] values) {
+		setArray(values.clone());
 	}
 
 	@Override
-	public void fill(final Character[] values, final int offset) {
-		final char[] prim = toPrimitive(values);
-
+	public void fill(final char[] values, final int offset) {
 		// Check if array has been initialized
-		if (this.getArray() == null) this.setArray(prim);
+		if (getArray() == null) setArray(values.clone());
 		else {
-			System.arraycopy(prim, 0, this.getArray(), offset, prim.length);
+			System.arraycopy(values, 0, getArray(), offset, values.length);
 		}
-	}
-
-	// -- Helper methods --
-
-	private char[] toPrimitive(final Character[] values) {
-		final char[] prim = new char[values.length];
-		for (int i = 0; i < prim.length; i++) {
-			prim[i] = values[i].charValue();
-		}
-		return prim;
 	}
 
 }
